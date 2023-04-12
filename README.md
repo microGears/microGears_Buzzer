@@ -11,6 +11,7 @@ Features
 
 Available Examples
 ----------------------------
+[reserved]
 <!-- * [Beep](https://domain.com/addres) -->
 
 Available Functions
@@ -27,8 +28,10 @@ Available Functions
 
 How To Install the Library
 ----------------------------
+[reserved]
 <!-- * [Beep](https://domain.com/addres) -->
 
 References
 ----------------------------
+[reserved]
 <!-- * [Beep](https://domain.com/addres) -->
