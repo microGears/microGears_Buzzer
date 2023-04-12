@@ -1,7 +1,5 @@
 ## microGears Buzzer Library for Arduino
-This library is designed for buzzer to beep without blocking other code.
-
-**microGears_Buzzer** stands for **easy buzzer**, which mean that the library is easy to use.
+**microGears_Buzzer** - the library is designed in such a way that the buzzer beeps or a series of beeps of different duration and / or repeats many times without blocking other code.
 
 Features
 ----------------------------
@@ -16,7 +14,6 @@ Available Examples
 
 Available Functions
 ----------------------------
-* microGears_Buzzer()
 * init(uint8_t pin)
 * setCallbackHandler(beep_callback_t callback)
 * beep(beep_scenario_t scenario, uint32_t repeat = 1)
