@@ -93,6 +93,8 @@ class microGears_Buzzer {
         }
     }
 
+    bool isBeep() { return __repeat > 0; }
+
     private:
     uint8_t         __pin;
     beep_callback_t __callback;
