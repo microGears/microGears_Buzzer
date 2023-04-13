@@ -7,13 +7,14 @@
 #include "WProgram.h"
 #endif
 
-#define BD_SHORT 75             // короткий сигнад
-#define BD_LONG 750             // длиный сигнал
-#define BD_SCENARIO_LENGTH 8    // макс. размер сценария
+#define BD_SHORT 75             // длительность короткого сигнала
+#define BD_LONG 750             // длительность длинного сигнала
+#define BD_SCENARIO_LENGTH 8    // максимальный размер сценария сигналов
+
 #define FILLIN(a, n) a[0] = n, memcpy(((char*)a) + sizeof(a[0]), a, sizeof(a) - sizeof(a[0]));
 
-typedef void (*beep_callback_t)(uint8_t val);
-typedef int16_t beep_scenario_t[BD_SCENARIO_LENGTH];    // сценарий
+typedef void (*beep_callback_t)(uint8_t val);           // (тип) функция-обработчик
+typedef int16_t beep_scenario_t[BD_SCENARIO_LENGTH];    // (тип) сценария
 
 class microGears_Buzzer {
     public:

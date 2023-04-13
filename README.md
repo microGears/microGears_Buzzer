@@ -7,6 +7,7 @@
 - [Установка](#install)
 - [Инициализация](#init)
 - [Функции](#functions)
+- [Использование](#usage)
 
 <a id="install"></a>
 
@@ -26,13 +27,13 @@
 #define PIN 3
 
 #include <Buzzer.h>
-// базовый конструктор
-microGears_Buzzer buzzer(PIN);
-// или так
+
 microGears_Buzzer buzzer();
+microGears_Buzzer buzzer(PIN); // с указанием пина явным образом
+
 
 void setup(){
-    buzzer.init(PIN);
+    buzzer.init(PIN); // (пере) инициализация
 
     // ...
 }
@@ -43,12 +44,75 @@ void setup(){
 ## Функции
 
 ```cpp
-void init(uint8_t pin);                             // инициализация;
-void setCallbackHandler(beep_callback_t callback);  // назначение своего обработчика для воспроизведения звука
-void beep(uint16_t duration, uint32_t repeat = 1);
-void beep(beep_scenario_t scenario, uint32_t repeat = 1);
-void circulate(beep_scenario_t scenario);
-void circulate(uint16_t duration);
-void stop(); // остановить вопроизведение
-void tick();
+void init(uint8_t pin);                                 // инициализация;
+void setCallbackHandler(beep_callback_t callback);      // назначение своего обработчика для воспроизведения звука
+void beep(uint16_t duration, uint32_t repeat);          // воспроизвести сигнал длительностью *duration*, повторять *repeat* кол-во раз
+void beep(beep_scenario_t scenario, uint32_t repeat);   // воспроизвести сценарий(сигналов разной длительности), повторять *repeat* кол-во раз
+void circulate(beep_scenario_t scenario);               // воспроизводить циклично сценарий(сигналов)
+void circulate(uint16_t duration);                      // воспроизводить циклично сигнал длительностью *duration*
+void stop();                                            // остановить вопроизведение
+void tick();                                            // обновление
+
+
+#define BD_SHORT 75             // длительность короткого сигнала
+#define BD_LONG 750             // длительность длинного сигнала
+#define BD_SCENARIO_LENGTH 8    // максимальный размер сценария сигналов
+
+typedef void (*beep_callback_t)(uint8_t val);           // (тип) функция-обработчик
+typedef int16_t beep_scenario_t[BD_SCENARIO_LENGTH];    // (тип) сценария
+```
+
+<a id="usage"></a>
+
+## Использование
+
+```cpp
+#define PIN 3
+
+#include <Buzzer.h>
+microGears_Buzzer buzzer();
+
+
+void my_beep(uint8_t val){
+    #if DEBUG > 0
+        Serial.print(F("Beep: "));
+        Serial.println((_val ? F("ON") : F("OFF")));
+    #endif
+    digitalWrite(PIN,val);
+}
+
+void setup(){
+    buzzer.init(PIN);                   // (пере) инициализация, 
+    buzzer.setCallbackHandler(my_beep); // назначить свой обработчик для воспроизведения
+    // ...
+}
+
+void loop(){
+    buzzer.tick();
+
+    // ...
+}
+
+void some_func(){
+    // воспроизвести сигнал длительностью 250 мсек., повторить 1 раз
+    buzzer.beep(250);
+
+    // воспроизвести сигнал длительностью 450 мсек., повторить 3 раза
+    buzzer.beep(450,3);
+
+    // воспроизвести сценарий, повторить 3 раза
+    beep_scenario_t list = {BD_SHORT, BD_LONG, BD_SHORT, BD_SHORT};
+    buzzer.beep(list,3);
+
+    // воспроизводить непрерывно сигнал длительностью 250 мсек.
+    buzzer.circulate(250);
+
+    // воспроизводить непрерывно сценарий.
+    beep_scenario_t list = {200, 500, 250, 500};
+    buzzer.circulate(list);
+
+    // остановить воспроизведение
+    buzzer.stop();
+}
+
 ```
