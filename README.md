@@ -1,6 +1,6 @@
-## microGears Buzzer Library for Arduino
+## microGears Buzzer
 
-**microGears_Buzzer** - the library is designed in such a way that the buzzer beeps or a series of beeps of different duration and / or repeats many times without blocking other code.
+Простая и функциональная библиотека для Arduino(esp8266/esp32 & etc.), устроена таким образом, что зуммер издает звуковой сигнал или серию звуковых сигналов разной продолжительности и/или повторяется много раз, не блокируя выполнение другого кода программы.
 
 ## Содержание
 
@@ -88,7 +88,7 @@ void setup(){
     // назначить свой обработчик для воспроизведения
     // по-умолчанию для подачи звукового сигнала используется ф-ция _digitalWrite(__pin, HIGH|LOW)_;
     buzzer.setCallbackHandler(my_beep);
-    
+
     // ...
 }
 
