@@ -10,7 +10,7 @@
 #define BD_SHORT 75             // короткий сигнад
 #define BD_LONG 750             // длиный сигнал
 #define BD_SCENARIO_LENGTH 8    // макс. размер сценария
-#define _fill(a, n) a[0] = n, memcpy(((char*)a) + sizeof(a[0]), a, sizeof(a) - sizeof(a[0]));
+#define FILLIN(a, n) a[0] = n, memcpy(((char*)a) + sizeof(a[0]), a, sizeof(a) - sizeof(a[0]));
 
 typedef void (*beep_callback_t)(uint8_t val);
 typedef int16_t beep_scenario_t[BD_SCENARIO_LENGTH];    // сценарий
@@ -18,6 +18,9 @@ typedef int16_t beep_scenario_t[BD_SCENARIO_LENGTH];    // сценарий
 class microGears_Buzzer {
     public:
     microGears_Buzzer(){};
+    microGears_Buzzer(uint8_t pin) {
+        init(pin);
+    };
 
     void init(uint8_t pin) {
         __pin = pin;
@@ -32,8 +35,8 @@ class microGears_Buzzer {
         int     size       = 0;
         int16_t durability = 0;
 
-        noBeep();
-        _fill(__scenario, 0);
+        stop();
+        FILLIN(__scenario, 0);
         while ((durability = scenario[size]) && size <= BD_SCENARIO_LENGTH) {
             __scenario[size] = constrain(durability, BD_LONG * -1, BD_LONG);
             size++;
@@ -44,9 +47,9 @@ class microGears_Buzzer {
     }
 
     void beep(uint16_t duration, uint32_t repeat = 1) {
-        noBeep();
+        stop();
         duration = constrain(duration, BD_SHORT, BD_LONG);
-        _fill(__scenario, duration);
+        FILLIN(__scenario, duration);
         __scenario_key = 0;
         __repeat       = (__scenario_length = repeat) * 2;
     }
@@ -61,7 +64,7 @@ class microGears_Buzzer {
         __loop = true;
     }
 
-    void noBeep() {
+    void stop() {
         __repeat = 0;
         __loop   = false;
         setState(LOW);
