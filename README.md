@@ -23,8 +23,19 @@
 ## Инициализация
 
 ```cpp
+#define PIN 3
+
 #include <Buzzer.h>
+// базовый конструктор
 microGears_Buzzer buzzer(PIN);
+// или так
+microGears_Buzzer buzzer();
+
+void setup(){
+    buzzer.init(PIN);
+
+    // ...
+}
 ```
 
 <a id="functions"></a>
