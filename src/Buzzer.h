@@ -11,7 +11,13 @@
 #define BD_LONG 750             // длительность длинного сигнала
 #define BD_SCENARIO_LENGTH 8    // максимальный размер сценария сигналов
 
-#define FILLIN(a, n) a[0] = n, memcpy(((char*)a) + sizeof(a[0]), a, sizeof(a) - sizeof(a[0]));
+#define FILLIN(a, n) \
+    do { \
+        a[0] = n; \
+        for (size_t i = 1; i < sizeof(a) / sizeof(a[0]); ++i) { \
+            a[i] = a[0]; \
+        } \
+    } while (0)
 
 typedef void (*beep_callback_t)(uint8_t val);           // (тип) функция-обработчик
 typedef int16_t beep_scenario_t[BD_SCENARIO_LENGTH];    // (тип) сценария
@@ -84,7 +90,7 @@ class microGears_Buzzer {
             setState(val);
 
             if (!rising) {
-                __scenario_key = (__scenario_key + 1) % __scenario_length;
+                __scenario_key = (__scenario_key + 1) % constrain(__scenario_length,0,BD_SCENARIO_LENGTH);
             }
 
             if (__repeat == 0 && __loop) {
